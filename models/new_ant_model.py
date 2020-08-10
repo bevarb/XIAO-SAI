@@ -4,10 +4,14 @@ import sys
 class Ant(object):
 
     # 初始化
-    def __init__(self, ID, city_num, ALPHA, BETA, distance_graph, pheromone_graph):
+    def __init__(self, ID, car_nums, v, r, c, city_num, ALPHA, BETA, distance_graph, pheromone_graph):
 
         self.ID = ID  # ID
-        self.city_num = city_num
+        self.city_num = city_num  # 城市数量
+        self.car_num = car_nums  # 车的数量
+        self.v = v  # 车行驶的速度
+        self.r = r  # 充电速率
+        self.c = c  # 耗电速率
         self.ALPHA = ALPHA
         self.BETA = BETA
         self.pheromone_graph = pheromone_graph
@@ -28,6 +32,8 @@ class Ant(object):
         # self.path.append(city_index)
         self.open_table_city[self.current_city] = False
         self.move_count = 1
+
+    def __get_time_graph(self):
 
     # 选择下一个城市
     def __choice_next_city(self):

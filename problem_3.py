@@ -59,42 +59,6 @@ def ants_method(distance_graph, Total_iter, ALPHA=1.0, BETA=2.0, RHO=0.5, Q=100.
 
     return best_ant.path, info, end_time - start_time, logs
 
-def geat_method(dist, NIND=500, Encoding='P',MAXGEN=300,XOVR=0.2,Pm=0.5):
-    '''NIND:种群规模
-    Encoding:编码方式
-    MAXGEN：最大进化代数
-    XOVR:交叉算子
-    Pm：变异算子'''
-    problem = MyProblem(dist)  # 生成问题对象
-    """=================================种群设置================================="""
-    Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)  # 创建区域描述器
-    population = ea.Population(Encoding, Field, NIND)  # 实例化种群对象（此时种群还没被初始化，仅仅是完成种群对象的实例化）
-    """===============================算法参数设置==============================="""
-    myAlgorithm = ea.soea_SEGA_templet(problem, population)  # 实例化一个算法模板对象
-    myAlgorithm.MAXGEN = MAXGEN  # 最大进化代数
-    myAlgorithm.recOper = ea.Xovox(XOVR=XOVR)  # 设置交叉算子
-    myAlgorithm.mutOper = ea.Mutinv(Pm=Pm)  # 设置变异算子
-    myAlgorithm.drawing = 1  # 设置绘图方式（0：不绘图；1：绘制结果图；2：绘制过程动画）
-    """==========================调用算法模板进行种群进化=========================="""
-    [population, obj_trace, var_trace] = myAlgorithm.run()  # 执行算法模板，得到最后一代种群以及进化记录器
-    population.save()  # 把最后一代种群的信息保存到文件中
-    # 输出结果
-    best_gen = np.argmin(obj_trace[:, 1])  # 记录最优种群是在哪一代
-    best_ObjV = np.min(obj_trace[:, 1])
-    print('最短路程为：%s' % (best_ObjV))
-    print('最佳路线为：')
-    best_journey, edges = problem.decode(var_trace[best_gen, :])
-    print(best_journey)
-    for i in range(len(best_journey)):
-        print(int(best_journey[i]), end=' ')
-    print()
-    print('有效进化代数：%s' % (obj_trace.shape[0]))
-    print('最优的一代是第 %s 代' % (best_gen + 1))
-    print('评价次数：%s' % (myAlgorithm.evalsNum))
-    print('时间已过 %s 秒' % (myAlgorithm.passTime))
-    info = ["Geat Method", str(MAXGEN) + " times", str(int(best_ObjV)) + " Km"]
-    return best_journey, info, myAlgorithm.passTime
-
 
 if __name__ == "__main__":
     data = pd.read_excel("data.xlsx")
@@ -116,14 +80,7 @@ if __name__ == "__main__":
                                      lonlat.loc[j]["传感器经度"], lonlat.loc[j]["传感器纬度"])
     # 蚁群算法
     path, info, pass_time, logs = ants_method(dist, 100, ALPHA=1.0, BETA=1.8, ant_num=80)
-    # 遗传算法
-    # path, info, pass_time = geat_method(dist, NIND=1000, Encoding='P', MAXGEN=200, XOVR=0.5, Pm=0.5)
-    # 禁忌搜索算法
-    # ta = tabusearch(dist, city_nums=30, diedaitimes=150, cacu_time=40, tabu_length=130, origin_times=500)
-    # path, info, pass_time, logs = ta._search_()
-    # 模拟退火算法
-    # SA = Simulated_Annealing(dist, city_nums=30, alpha=0.999, T=100, Tmin=1, iters=1200)
-    # path, info, pass_time, logs = SA.run()
+
     plot_iter(logs)
     print(path)
     print(info)
