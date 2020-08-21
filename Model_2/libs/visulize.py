@@ -10,7 +10,7 @@ def plot_iter(L):
     plt.show()
 
 class visulize():
-    def base_map(self, real_data):
+    def base_map(self, real_data, name):
         '''可视化基本地图，将原来的点放大两倍，左下角为坐标原点，左->右为x轴，右->左为y轴
         将原来的点除以5，放缩一下基本像素点为5KM
         '''
@@ -18,7 +18,7 @@ class visulize():
         # real_data[:, 0:2] = real_data[:, 0:2]
         self.new_data = []  # 把新的位置重新定义下， 可以根据索引画线
         for i in range(len(real_data)):
-            self.new_data.append([int(real_data[i][0] * 2.7) + 20, int(800 - real_data[i][1] * 2.7) - 100, i])
+            self.new_data.append([int(real_data[i][0]), int(800 - real_data[i][1] * 2) - 200, i])
         # 两个贴图
         DC = Image.fromarray(cv.resize(cv.imread("icon/DC.png"), (45, 30)))
         sensor = Image.fromarray(cv.resize(cv.imread("icon/sensor.png"), (40, 30)))
@@ -32,7 +32,7 @@ class visulize():
         self.font = ImageFont.truetype(font='msyh.ttf', size=15)
         draw = ImageDraw.ImageDraw(img)
         for i in range(len(real_data)):
-            draw.text((self.new_data[i][0], self.new_data[i][1]), "v%d" % i, "black", font=self.font)
+            draw.text((self.new_data[i][0], self.new_data[i][1]), name[i], "black", font=self.font)
         draw.line((680, 50, 694, 50), "black")  # 横线
         draw.line((680, 48, 680, 50), "black")  # 竖线1
         draw.line((694, 48, 694, 50), "black")  # 竖线2

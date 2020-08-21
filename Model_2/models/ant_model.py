@@ -184,14 +184,14 @@ class Ant(object):
         self.__clean_data()
 
         # 先把所有的地方都送5吨的整数倍
-        # for i in range(1, self.city_num):
-        #     while self.need[i] - self.have_transfor[i] >= self.q:
-        #         self.__move(i)
-        #         self.weight_map.append(self.q)
-        #         self.__move(0)
-        #         self.weight_map.append(0)
-        #         self.have_transfor[i] += self.q
-        #         self.have_transfor[0] -= self.q
+        for i in range(1, self.city_num):
+            while self.need[i] - self.have_transfor[i] >= self.q:
+                self.__move(i)
+                self.weight_map.append(self.q)
+                self.__move(0)
+                self.weight_map.append(0)
+                self.have_transfor[i] += self.q
+                self.have_transfor[0] -= self.q
 
 
         # 搜素路径，直到城市0处的物资被运送完
