@@ -53,11 +53,11 @@ def plot_RS(data):
     plt.ylim([0, 50])
     for label in labels:
         label.set_fontname("DejaVu")
-    colors = ["black", "#4c51b4ff", "tomato"]
-    markers = ["s", "o", "v"]
-    for i in range(3):
+    colors = ["black", "#4c51b4ff", "tomato", "red"]
+    # markers = ["s", "o", "v"]
+    for i in range(4):
         print("%.3f g/L" % rs[i, 0])
-        plt.plot(t, rs[i, :], color=colors[i], marker=markers[i], linewidth=2, label="%.3f g/L" % rs[i, 0])
+        plt.plot(t, rs[i, :], linewidth=2, label="%.3f g/L" % rs[i, 0])
     plt.legend(fontsize=16)
     plt.show()
 
@@ -103,7 +103,7 @@ def plot_fit_v(x, y, fit_y):
     plt.tick_params(labelsize=16)
     labels = ax.get_xticklabels() + ax.get_yticklabels()
     plt.xlim([0, 100])
-    plt.ylim([-20, 20])
+    plt.ylim([-10, 10])
     for label in labels:
         label.set_fontname("DejaVu")
     colors = ["black", "#4c51b4ff", "tomato"]
@@ -136,6 +136,31 @@ def plot_fitted(x, y, fit_y):
     labels = ["COD", "RS", "P"]
     plt.plot(x, y, color=colors[0], linewidth=2, label="Raw Data")
     plt.plot(x, fit_y, color=colors[1], linewidth=2, label="Fitted Data")
+    plt.legend(fontsize=16)
+    plt.show()
+
+def plot_diff_sig(ys, lab):
+
+    fig, ax = plt.subplots()  # 建立了慕布
+    for key, spine in ax.spines.items():
+        if key == "right" or key == "top":
+            spine.set_visible(False)
+        if key == "left" or key == "bottom":
+            spine.set_linewidth(2)
+    ax.tick_params(width=2, length=7)
+    plt.xlabel("Time(hour))", {"family": "DejaVu", "size": 22, "weight": "normal"})
+    plt.ylabel("P Concentration(g/L)", {"family": "DejaVu", "size": 22, "weight": "normal"})
+    plt.tick_params(labelsize=16)
+    labels = ax.get_xticklabels() + ax.get_yticklabels()
+    plt.xlim([0, 100])
+    plt.ylim([0, 100])
+    for label in labels:
+        label.set_fontname("DejaVu")
+    # colors = ["black", "#4c51b4ff", "tomato"]
+    # markers = ["s", "o", "v"]
+    # labels = ["COD", "RS", "P"]
+    for i in range(len(ys)):
+        plt.plot(np.arange(0, 100), ys[i], linewidth=2, label="dC:" + str(lab[i]))
     plt.legend(fontsize=16)
     plt.show()
 
